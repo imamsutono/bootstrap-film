@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Gallery</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Film Gallery</a>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" id="searchInput" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" id="searchBtn" type="submit">Search</button>
+                <button class="btn btn-outline-primary ms-2" id="sortBtn" type="button">Sort A-Z</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-3">
+                <h3>Kategori</h3>
+                <ul class="list-group">
+                    <li class="list-group-item">Teknologi</li>
+                    <li class="list-group-item">Aksi</li>
+                    <li class="list-group-item">Drama</li>
+                    <li class="list-group-item">Komedi</li>
+                    <li class="list-group-item">Romantis</li>
+                    <li class="list-group-item">Thriller</li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h3>Film</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQW8SnjJQ9s3Ucj1_hePX_sH6_uyfM58pbQreOVO-0nN0PnbHRL" class="card-img-top" alt="Pirates of Silicon Valley">
+                            <div class="card-body">
+                                <h5 class="card-title">Pirates of Silicon Valley</h5>
+                                <a href="#" class="btn btn-primary btn-play" data-video-url="https://www.youtube.com/embed/Vm4tx1O9GAc" data-title="Pirates of Silicon Valley">
+                                    Play
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTLquJMNqaw1F8zibP60S8vmK90hmzdSuEbvdOXBtAwpFvFgMHv" class="card-img-top" alt="Steve Jobs">
+                            <div class="card-body">
+                                <h5 class="card-title">Steve Jobs</h5>
+                                <a href="#" class="btn btn-primary btn-play" data-video-url="https://www.youtube.com/embed/Vm4tx1O9GAc" data-title="Steve Jobs">
+                                    Play
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSdNEHkEY7T-Vkq8aOTBAIABBDh4QSjcSqChYaetrUbIXgZN-Uz" class="card-img-top" alt="Triumph of the Nerds">
+                            <div class="card-body">
+                                <h5 class="card-title">Triumph of the Nerds</h5>
+                                <a href="#" class="btn btn-primary btn-play" data-video-url="https://www.youtube.com/embed/Vm4tx1O9GAc" data-title="Triumph of the Nerds">
+                                    Play
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoModalLabel">Film Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="" allow="autoplay" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Play film
+            $(".btn-play").on("click", function() {
+                const videoUrl = $(this).data("video-url");
+                const videoTitle = $(this).data("title");
+                $("#videoModal .modal-title").text(videoTitle);
+                $("#videoModal .modal-body iframe").attr("src", videoUrl);
+                $("#videoModal").modal("show");
+            });
+
+            // Search films
+            $("#searchBtn").on("click", function(e) {
+                e.preventDefault();
+                const searchQuery = $("#searchInput").val().toLowerCase();
+                $(".card").each(function() {
+                    const filmTitle = $(this).find(".card-title").text().toLowerCase();
+                    if (filmTitle.includes(searchQuery)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            // Sort films
+            $("#sortBtn").on("click", function() {
+                const sortedFilms = $(".card").sort(function(a, b) {
+                    const titleA = $(a).find(".card-title").text();
+                    const titleB = $(b).find(".card-title").text();
+                    return titleA.localeCompare(titleB);
+                });
+
+                $(".row").html(sortedFilms);
+            });
+        });
+    </script>
+</body>
+</html>
